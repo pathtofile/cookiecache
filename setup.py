@@ -12,7 +12,7 @@ setup(
     name = "cookiecache",
     version = version,
     author = "PatH",
-    author_email = "path@tofile.dev",
+    author_email = "pypi_cookiecache@tofile.dev",
     license = "MIT",
     description = "Simplify getting and storing cookies from the browser to use in Python",
     long_description = long_description,
