@@ -1,1 +1,1 @@
-from .cookiecache import load_cookies, flatten_cookies
+from .cookiecache import load, flatten_cookies

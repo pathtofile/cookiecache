@@ -33,7 +33,7 @@ cookiecache --help
 ```
 
 ## Library
-To use cookiecache as a library call `load_cookies()` with arguments similar to
+To use cookiecache as a library call `load()` with arguments similar to
 the cli:
 ```python
 import cookiecache
@@ -42,28 +42,28 @@ import cookiecache
 # After the first run this will load the cookies
 # from disk first, and only get them from the brower
 # if they have expired
-cookies = cookiecache.load_cookies(
-    domain_name="github.com",
-    cookie_name="_gh_sess",
+cookies = cookiecache.load(
+    domain="github.com",
+    cookie="_gh_sess",
     filename="cookies.json",
 )
 
 # Load all cookies from JSON file from another machine, ie.
 # Don't attempt to refresh or get cookies from this machine
-cookies = cookiecache.load_cookies(
+cookies = cookiecache.load(
     filename="cookies.json",
     check_expiry=False
 )
 
 # Get cookies only from Chrome, and don't read or save to disk
-cookies = cookiecache.load_cookies(
-    domain_name="github.com",
+cookies = cookiecache.load(
+    domain="github.com",
     browser="chrome",
 )
 
 # Convert cookies from cookiecache to a flat key-value
 # pair to use with Requests
-cookies = cookiecache.load_cookies(domain_name="github.com")
+cookies = cookiecache.load(domain="github.com")
 cookies_flat = cookiecache.flatten_cookies(cookies)
 reqeusts.get("http://github.com", cookies=cookies_flat)
 ```

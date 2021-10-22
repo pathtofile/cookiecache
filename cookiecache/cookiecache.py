@@ -89,7 +89,7 @@ def check_if_exired(cookies: dict) -> bool:
     Check if any of the cookies have expired
     ignores cookies with no expiry
     """
-    now = datetime.datetime.now()
+    now = datetime.datetime.utcnow()
     for domain in cookies:
         for cookie in cookies[domain]:
             expires = datetime.datetime.fromtimestamp(cookie["expires"])
@@ -110,10 +110,10 @@ def flatten_cookies(cookies: dict) -> dict:
     return cookies_flat
 
 
-def load_cookies(
+def load(
     filename: Optional[str] = None,
-    domain_name: Optional[str] = None,
-    cookie_name: Optional[dict] = None,
+    domain: Optional[str] = None,
+    cookie: Optional[dict] = None,
     browser: Optional[str] = None,
     check_expiry: bool = True,
     force_refresh: bool = False,
@@ -127,14 +127,14 @@ def load_cookies(
 
     if filename is None:
         cookies, cj = get_fresh_cookies(
-            domain_name, cookie_name=cookie_name, browser=browser
+            domain, cookie_name=cookie, browser=browser
         )
     # curl_format always gets fresh to make it easier for me
     elif force_refresh or curl_format or not os.path.exists(filename):
         # Need to get cookies
         need_to_save = True
         cookies, cj = get_fresh_cookies(
-            domain_name, cookie_name=cookie_name, browser=browser
+            domain, cookie_name=cookie, browser=browser
         )
     else:
         with open(filename, "r") as f:
@@ -142,7 +142,7 @@ def load_cookies(
         if check_expiry and check_if_exired(cookies):
             need_to_save = True
             cookies, cj = get_fresh_cookies(
-                domain_name, cookie_name=cookie_name, browser=browser
+                domain, cookie_name=cookie, browser=browser
             )
 
     if need_to_save:
@@ -195,10 +195,10 @@ def main():
     if args.curl and args.filename is None:
         print("--curl must be used with --filename")
         sys.exit(1)
-    cookies = load_cookies(
+    cookies = load(
         filename=args.filename,
-        domain_name=args.domain,
-        cookie_name=args.cookie,
+        domain=args.domain,
+        cookie=args.cookie,
         browser=args.browser,
         check_expiry=args.check,
         force_refresh=args.force,
