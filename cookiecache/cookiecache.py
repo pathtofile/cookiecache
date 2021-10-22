@@ -126,24 +126,18 @@ def load(
     need_to_save = False
 
     if filename is None:
-        cookies, cj = get_fresh_cookies(
-            domain, cookie_name=cookie, browser=browser
-        )
+        cookies, cj = get_fresh_cookies(domain, cookie_name=cookie, browser=browser)
     # curl_format always gets fresh to make it easier for me
     elif force_refresh or curl_format or not os.path.exists(filename):
         # Need to get cookies
         need_to_save = True
-        cookies, cj = get_fresh_cookies(
-            domain, cookie_name=cookie, browser=browser
-        )
+        cookies, cj = get_fresh_cookies(domain, cookie_name=cookie, browser=browser)
     else:
         with open(filename, "r") as f:
             cookies = json.loads(f.read())
         if check_expiry and check_if_exired(cookies):
             need_to_save = True
-            cookies, cj = get_fresh_cookies(
-                domain, cookie_name=cookie, browser=browser
-            )
+            cookies, cj = get_fresh_cookies(domain, cookie_name=cookie, browser=browser)
 
     if need_to_save:
         if curl_format:
